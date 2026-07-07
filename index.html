@@ -3,9 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>주말 데이트 신청 ❤️</title>
+    <title>지우야 만나자</title>
+    <!-- 깔끔하고 모던한 웹 폰트 (Pretendard) 적용 -->
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css" />
     <style>
-        * { box-sizing: border-box; }
+        * { box-sizing: border-box; font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, system-ui, Roboto, sans-serif; }
+        
         body {
             display: flex;
             flex-direction: column;
@@ -13,64 +16,115 @@
             justify-content: center;
             min-height: 100vh;
             margin: 0;
-            background-color: #ffe6e6;
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            /* 은은하게 움직이는 파스텔 그라데이션 배경 */
+            background: linear-gradient(-45deg, #ff9a9e, #fecfef, #a1c4fd, #c2e9fb);
+            background-size: 400% 400%;
+            animation: gradientBG 15s ease infinite;
             text-align: center;
             overflow-x: hidden;
             padding: 20px;
         }
+
+        @keyframes gradientBG {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        /* 글래스모피즘 (유리 질감) 카드 디자인 */
         .card {
-            background: white;
-            border-radius: 20px;
-            padding: 30px 20px;
-            box-shadow: 0 8px 16px rgba(0,0,0,0.06);
+            background: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(15px);
+            -webkit-backdrop-filter: blur(15px);
+            border: 1px solid rgba(255, 255, 255, 0.5);
+            border-radius: 28px;
+            padding: 40px 25px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.08);
             width: 100%;
-            max-width: 380px;
-            min-height: 400px;
+            max-width: 400px;
+            min-height: 450px;
             display: flex;
             flex-direction: column;
             justify-content: center;
             align-items: center;
         }
-        /* 단계별 화면 제어 */
+
         .step { display: none; width: 100%; }
         .step.active {
             display: flex;
             flex-direction: column;
             align-items: center;
-            animation: fadeIn 0.4s ease-in-out;
+            animation: fadeIn 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94);
         }
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
 
-        h1 { color: #ff4d4d; font-size: 1.6rem; margin-top: 0; margin-bottom: 20px; word-break: keep-all; }
-        .gif-container img { width: 180px; border-radius: 15px; margin-bottom: 20px; }
+        h1 { 
+            color: #ff4d6d; 
+            font-size: 1.6rem; 
+            font-weight: 700;
+            margin-top: 0; 
+            margin-bottom: 25px; 
+            word-break: keep-all; 
+            line-height: 1.4;
+        }
+
+        /* 고양이 둥둥 떠다니는 효과 */
+        .gif-container img { 
+            width: 180px; 
+            border-radius: 20px; 
+            margin-bottom: 25px; 
+            box-shadow: 0 10px 20px rgba(0,0,0,0.05);
+            animation: float 3s ease-in-out infinite;
+        }
+        @keyframes float {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+            100% { transform: translateY(0px); }
+        }
         
-        /* 버튼 및 선택지 스타일 */
-        .btn-container { display: flex; gap: 15px; width: 100%; justify-content: center; margin-top: 20px; }
+        .btn-container { display: flex; gap: 15px; width: 100%; justify-content: center; margin-top: 10px; }
+        
         button {
-            font-size: 1.1rem; padding: 12px 24px; border: none; border-radius: 25px;
-            cursor: pointer; font-weight: bold; box-shadow: 0 4px 6px rgba(0,0,0,0.05);
-            transition: all 0.1s;
+            font-size: 1.1rem; padding: 14px 28px; border: none; border-radius: 30px;
+            cursor: pointer; font-weight: 700; 
+            transition: all 0.2s cubic-bezier(0.25, 0.46, 0.45, 0.94);
         }
-        .btn-next { background-color: #ff4d4d; color: white; width: 100%; margin-top: 25px; }
-        .btn-next:active { transform: scale(0.98); background-color: #e63939; }
         
-        #yesBtn { background-color: #ff4d4d; color: white; }
-        #noBtn { background-color: #f0f0f0; color: #555; transition: left 0.2s ease, top 0.2s ease; }
+        /* 긍정 버튼 예쁜 그라데이션 */
+        #yesBtn, .btn-next { 
+            background: linear-gradient(135deg, #ff758c 0%, #ff7eb3 100%);
+            color: white; 
+            box-shadow: 0 8px 20px rgba(255, 117, 140, 0.4);
+        }
+        .btn-next { width: 100%; margin-top: 30px; }
+        #yesBtn:active, .btn-next:active { transform: scale(0.95); box-shadow: 0 4px 10px rgba(255, 117, 140, 0.3); }
+        
+        #noBtn { 
+            background-color: rgba(255, 255, 255, 0.9); 
+            color: #666; 
+            box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+            transition: left 0.2s ease, top 0.2s ease; 
+        }
 
-        /* 커스텀 체크박스/라디오 스타일 */
-        .options-grid { display: flex; flex-direction: column; gap: 12px; width: 100%; }
+        .options-grid { display: flex; flex-direction: column; gap: 14px; width: 100%; }
         .option-label {
-            display: block; padding: 15px; background: #f9f9f9; border: 2px solid #eee;
-            border-radius: 12px; cursor: pointer; font-weight: 600; font-size: 1.05rem;
-            transition: all 0.2s; text-align: center; color: #444;
+            display: block; padding: 16px; 
+            background: rgba(255, 255, 255, 0.6); 
+            border: 2px solid transparent;
+            border-radius: 18px; cursor: pointer; font-weight: 600; font-size: 1.05rem;
+            transition: all 0.25s ease; text-align: center; color: #555;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.02);
         }
         input[type="checkbox"], input[type="radio"] { display: none; }
         
-        /* 선택되었을 때의 스타일 */
+        /* 선택되었을 때의 디자인 팝업 효과 */
         input[type="checkbox"]:checked + .option-label,
         input[type="radio"]:checked + .option-label {
-            background-color: #fff0f0; border-color: #ff4d4d; color: #ff4d4d;
+            background-color: white; 
+            border-color: #ff758c; 
+            color: #ff4d6d;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 15px rgba(255, 117, 140, 0.15);
         }
     </style>
 </head>
@@ -83,7 +137,7 @@
                 <div class="gif-container">
                     <img src="https://media.tenor.com/efioP1eA_20AAAAi/peach-and-goma-peach-goma.gif" alt="부탁하는 고양이">
                 </div>
-                <h1>이번 주말에 나랑 데이트 할래?</h1>
+                <h1>이번 주말에<br>나랑 데이트 할래?</h1>
                 <div class="btn-container">
                     <button type="button" id="yesBtn" onclick="nextStep(2)">응! 좋아 ❤️</button>
                     <button type="button" id="noBtn" onmouseover="moveButton()" ontouchstart="moveButton()">아니 싫어</button>
@@ -94,7 +148,7 @@
                 <div class="gif-container">
                     <img src="https://media.tenor.com/w8N7I9Ims9IAAAAi/peach-goma.gif" alt="기대하는 고양이">
                 </div>
-                <h1>언제언제 시간돼? (복수선택 가능!)</h1>
+                <h1>언제언제 시간돼?<br><span style="font-size: 1rem; font-weight: 500; color: #888;">(복수선택 가능!)</span></h1>
                 <div class="options-grid">
                     <input type="checkbox" id="date1" name="날짜" value="8월 6~7일">
                     <label class="option-label" for="date1">📅 8월 6 ~ 7일</label>
@@ -137,7 +191,6 @@
     </div>
 
     <script>
-        // 발급받은 Formspree 주소 적용 완료!
         const FORMSPREE_URL = "https://formspree.io/f/xeebdvjn";
 
         function nextStep(stepNum) {
@@ -150,8 +203,8 @@
             noBtn.style.position = 'fixed';
             const maxX = window.innerWidth - noBtn.offsetWidth;
             const maxY = window.innerHeight - noBtn.offsetHeight;
-            const x = Math.max(10, Math.random() * maxX);
-            const y = Math.max(10, Math.random() * maxY);
+            const x = Math.max(20, Math.random() * (maxX - 20));
+            const y = Math.max(20, Math.random() * (maxY - 20));
             noBtn.style.left = `${x}px`;
             noBtn.style.top = `${y}px`;
         }
@@ -171,7 +224,7 @@
                 });
                 
                 if (response.ok) {
-                    finalMsg.innerText = "답변 고마워! 곧 연락할게 짜잔! ❤️";
+                    finalMsg.innerHTML = "답변 고마워!<br>곧 연락할게 짜잔! ❤️";
                     createConfetti();
                 } else {
                     finalMsg.innerText = "전송에 실패했어요 ㅠ_ㅠ 따로 카톡해줘!";
@@ -182,25 +235,31 @@
         }
 
         function createConfetti() {
-            const colors = ['#ff4d4d', '#ffcc00', '#66ff66', '#33ccff', '#ff66b2'];
-            for(let i = 0; i < 80; i++) {
+            const colors = ['#ff758c', '#ff7eb3', '#a1c4fd', '#c2e9fb', '#fecfef'];
+            for(let i = 0; i < 100; i++) {
                 const confetti = document.createElement('div');
                 confetti.style.position = 'fixed';
-                confetti.style.width = Math.random() * 8 + 4 + 'px';
-                confetti.style.height = Math.random() * 8 + 4 + 'px';
+                confetti.style.width = Math.random() * 8 + 6 + 'px';
+                confetti.style.height = Math.random() * 8 + 6 + 'px';
                 confetti.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
                 confetti.style.left = Math.random() * window.innerWidth + 'px';
                 confetti.style.top = '-20px';
-                confetti.style.borderRadius = '50%';
+                confetti.style.borderRadius = Math.random() > 0.5 ? '50%' : '4px';
                 confetti.style.zIndex = '1000';
+                confetti.style.boxShadow = '0 2px 5px rgba(0,0,0,0.1)';
                 document.body.appendChild(confetti);
 
-                const fallDuration = Math.random() * 2 + 2;
-                confetti.style.transition = `top ${fallDuration}s cubic-bezier(0.25, 0.46, 0.45, 0.94), opacity ${fallDuration}s ease-in`;
+                const fallDuration = Math.random() * 2 + 2.5;
+                confetti.style.transition = `top ${fallDuration}s cubic-bezier(0.25, 0.46, 0.45, 0.94), opacity ${fallDuration}s ease-in, transform ${fallDuration}s linear`;
                 
+                // 회전 효과 추가
+                const rotation = Math.random() * 360;
+                confetti.style.transform = `rotate(${rotation}deg)`;
+
                 setTimeout(() => {
                     confetti.style.top = window.innerHeight + 'px';
                     confetti.style.opacity = '0';
+                    confetti.style.transform = `rotate(${rotation + 360}deg)`;
                 }, 50);
 
                 setTimeout(() => confetti.remove(), fallDuration * 1000 + 50);
