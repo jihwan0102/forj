@@ -67,9 +67,8 @@
             line-height: 1.4;
         }
 
-        /* 엑스박스 절대 안 뜨는 텍스트 이모지 디자인 */
         .emoji-container {
-            font-size: 110px; /* 이모지 크기 */
+            font-size: 110px;
             line-height: 1.2;
             margin-bottom: 15px;
             animation: float 3s ease-in-out infinite;
@@ -81,7 +80,7 @@
             100% { transform: translateY(0px); }
         }
         
-        .btn-container { display: flex; gap: 15px; width: 100%; justify-content: center; margin-top: 10px; }
+        .btn-container { display: flex; gap: 15px; width: 100%; justify-content: center; margin-top: 10px; position: relative; }
         
         button {
             font-size: 1.1rem; padding: 14px 28px; border: none; border-radius: 30px;
@@ -132,13 +131,12 @@
         <form id="dateForm" style="width: 100%;">
             
             <div class="step active" id="step1">
-                <!-- 이미지 대신 텍스트 이모지 사용 -->
                 <div class="emoji-container">🥺</div>
                 <h1>이번 주말에<br>나랑 데이트 할래?</h1>
                 <div class="btn-container">
                     <button type="button" id="yesBtn" onclick="nextStep(2)">응! 좋아 ❤️</button>
-                    <!-- 아니 싫어 버튼 클릭 시 강제 수락 함수 실행 -->
-                    <button type="button" id="noBtn" onmouseover="moveButton(event)" ontouchstart="moveButton(event)" onclick="forceAccept()">아니 싫어</button>
+                    <!-- 강제 수락 함수(forceAccept) 제거 및 무한 도망가기 복구 -->
+                    <button type="button" id="noBtn" onmouseover="moveButton(event)" ontouchstart="moveButton(event)">아니 싫어</button>
                 </div>
             </div>
 
@@ -190,18 +188,26 @@
             document.getElementById(`step${stepNum}`).classList.add('active');
         }
 
-        // 버튼 이동 횟수 카운터
-        let moveCount = 0;
+        let isFirstMove = true; // 첫 이동 여부 체크용 변수
 
         function moveButton(event) {
-            // 딱 1번만 도망가고, 그 이후로는 안 움직임
-            if (moveCount >= 1) return;
-            
             if(event && event.type !== 'click') {
                 event.preventDefault();
             }
 
             const noBtn = document.getElementById('noBtn');
+            
+            // 첫 번째 도망갈 때: 원래 '아니 싫어' 버튼이 있던 크기만큼의 투명 박스를 그 자리에 박아둠
+            // (이걸 안 하면 '응 좋아' 버튼이 혼자 가운데로 쏙 이동해버림)
+            if (isFirstMove) {
+                const ghostBox = document.createElement('div');
+                ghostBox.style.width = noBtn.offsetWidth + 'px';
+                ghostBox.style.height = noBtn.offsetHeight + 'px';
+                ghostBox.style.flexShrink = '0';
+                noBtn.parentNode.insertBefore(ghostBox, noBtn);
+                isFirstMove = false;
+            }
+
             noBtn.style.position = 'fixed';
             
             const safeMarginX = 30;
@@ -218,14 +224,6 @@
             
             noBtn.style.left = `${x}px`;
             noBtn.style.top = `${y}px`;
-            
-            moveCount++; // 이동 횟수 증가
-        }
-
-        // '아니 싫어' 버튼을 클릭했을 때 실행되는 함수
-        function forceAccept() {
-            alert("거절은 거절한다! 어차피 나랑 놀아야 해 😎");
-            nextStep(2);
         }
 
         async function submitAndFinal() {
