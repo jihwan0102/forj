@@ -2,12 +2,11 @@
 <html lang="ko">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>지우야 만나자</title>
-    <!-- 깔끔하고 모던한 웹 폰트 (Pretendard) 적용 -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>주말 데이트 신청 ❤️</title>
     <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css" />
     <style>
-        * { box-sizing: border-box; font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, system-ui, Roboto, sans-serif; }
+        * { box-sizing: border-box; font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, system-ui, sans-serif; }
         
         body {
             display: flex;
@@ -16,12 +15,11 @@
             justify-content: center;
             min-height: 100vh;
             margin: 0;
-            /* 은은하게 움직이는 파스텔 그라데이션 배경 */
             background: linear-gradient(-45deg, #ff9a9e, #fecfef, #a1c4fd, #c2e9fb);
             background-size: 400% 400%;
             animation: gradientBG 15s ease infinite;
             text-align: center;
-            overflow-x: hidden;
+            overflow: hidden; /* 스크롤 방지 */
             padding: 20px;
         }
 
@@ -31,7 +29,6 @@
             100% { background-position: 0% 50%; }
         }
 
-        /* 글래스모피즘 (유리 질감) 카드 디자인 */
         .card {
             background: rgba(255, 255, 255, 0.7);
             backdrop-filter: blur(15px);
@@ -47,6 +44,8 @@
             flex-direction: column;
             justify-content: center;
             align-items: center;
+            position: relative;
+            z-index: 10;
         }
 
         .step { display: none; width: 100%; }
@@ -60,7 +59,7 @@
 
         h1 { 
             color: #ff4d6d; 
-            font-size: 1.6rem; 
+            font-size: 1.5rem; 
             font-weight: 700;
             margin-top: 0; 
             margin-bottom: 25px; 
@@ -68,13 +67,13 @@
             line-height: 1.4;
         }
 
-        /* 고양이 둥둥 떠다니는 효과 */
+        /* 엑스박스 방지용 안정적인 3D 애니메이션 이모지 */
         .gif-container img { 
-            width: 180px; 
-            border-radius: 20px; 
+            width: 150px; 
+            height: 150px;
             margin-bottom: 25px; 
-            box-shadow: 0 10px 20px rgba(0,0,0,0.05);
             animation: float 3s ease-in-out infinite;
+            object-fit: contain;
         }
         @keyframes float {
             0% { transform: translateY(0px); }
@@ -87,10 +86,9 @@
         button {
             font-size: 1.1rem; padding: 14px 28px; border: none; border-radius: 30px;
             cursor: pointer; font-weight: 700; 
-            transition: all 0.2s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            transition: transform 0.1s ease, box-shadow 0.1s ease;
         }
         
-        /* 긍정 버튼 예쁜 그라데이션 */
         #yesBtn, .btn-next { 
             background: linear-gradient(135deg, #ff758c 0%, #ff7eb3 100%);
             color: white; 
@@ -102,8 +100,10 @@
         #noBtn { 
             background-color: rgba(255, 255, 255, 0.9); 
             color: #666; 
-            box-shadow: 0 4px 10px rgba(0,0,0,0.05);
-            transition: left 0.2s ease, top 0.2s ease; 
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+            /* 모바일에서 버튼이 움직일 때 애니메이션 제거 (부드럽게 하기보다 빠릿하게 도망가도록) */
+            transition: left 0.1s, top 0.1s; 
+            z-index: 100;
         }
 
         .options-grid { display: flex; flex-direction: column; gap: 14px; width: 100%; }
@@ -117,7 +117,6 @@
         }
         input[type="checkbox"], input[type="radio"] { display: none; }
         
-        /* 선택되었을 때의 디자인 팝업 효과 */
         input[type="checkbox"]:checked + .option-label,
         input[type="radio"]:checked + .option-label {
             background-color: white; 
@@ -135,20 +134,23 @@
             
             <div class="step active" id="step1">
                 <div class="gif-container">
-                    <img src="https://media.tenor.com/efioP1eA_20AAAAi/peach-and-goma-peach-goma.gif" alt="부탁하는 고양이">
+                    <!-- 애절한 표정 3D 이모지 -->
+                    <img src="https://raw.githubusercontent.com/Tarikul-Islam-Anik/Animated-Fluent-Emojis/master/Emojis/Smilies/Pleading%20Face.png" alt="부탁하는 표정">
                 </div>
                 <h1>이번 주말에<br>나랑 데이트 할래?</h1>
                 <div class="btn-container">
                     <button type="button" id="yesBtn" onclick="nextStep(2)">응! 좋아 ❤️</button>
-                    <button type="button" id="noBtn" onmouseover="moveButton()" ontouchstart="moveButton()">아니 싫어</button>
+                    <!-- 터치 이벤트에 event 파라미터 전달 추가 -->
+                    <button type="button" id="noBtn" onmouseover="moveButton(event)" ontouchstart="moveButton(event)">아니 싫어</button>
                 </div>
             </div>
 
             <div class="step" id="step2">
                 <div class="gif-container">
-                    <img src="https://media.tenor.com/w8N7I9Ims9IAAAAi/peach-goma.gif" alt="기대하는 고양이">
+                    <!-- 하트 눈 3D 이모지 -->
+                    <img src="https://raw.githubusercontent.com/Tarikul-Islam-Anik/Animated-Fluent-Emojis/master/Emojis/Smilies/Smiling%20Face%20with%20Hearts.png" alt="하트 눈 표정">
                 </div>
-                <h1>언제언제 시간돼?<br><span style="font-size: 1rem; font-weight: 500; color: #888;">(복수선택 가능!)</span></h1>
+                <h1>언제언제 시간돼?<br><span style="font-size: 0.95rem; font-weight: 500; color: #888;">(복수선택 가능!)</span></h1>
                 <div class="options-grid">
                     <input type="checkbox" id="date1" name="날짜" value="8월 6~7일">
                     <label class="option-label" for="date1">📅 8월 6 ~ 7일</label>
@@ -167,7 +169,8 @@
 
             <div class="step" id="step3">
                 <div class="gif-container">
-                    <img src="https://media.tenor.com/F_Nn868A86UAAAAi/mochi-mochi-peach-cat-peach-cat.gif" alt="고민하는 고양이">
+                    <!-- 고민하는 3D 이모지 -->
+                    <img src="https://raw.githubusercontent.com/Tarikul-Islam-Anik/Animated-Fluent-Emojis/master/Emojis/Smilies/Thinking%20Face.png" alt="고민하는 표정">
                 </div>
                 <h1>어디갈까? ✨</h1>
                 <div class="options-grid">
@@ -182,7 +185,8 @@
 
             <div class="step" id="step4">
                 <div class="gif-container">
-                    <img src="https://media.tenor.com/z4_y9-W4qGgAAAAi/peach-goma.gif" alt="신난 고양이">
+                    <!-- 파티 축하 3D 이모지 -->
+                    <img src="https://raw.githubusercontent.com/Tarikul-Islam-Anik/Animated-Fluent-Emojis/master/Emojis/Smilies/Partying%20Face.png" alt="신난 표정">
                 </div>
                 <h1 id="finalMsg">답변이 전송 중입니다... 🚀</h1>
             </div>
@@ -198,13 +202,30 @@
             document.getElementById(`step${stepNum}`).classList.add('active');
         }
 
-        function moveButton() {
+        // 버튼 화면 이탈 방지 로직 강화
+        function moveButton(event) {
+            // 터치 시 강제로 클릭되는 현상 방지
+            if(event) {
+                event.preventDefault();
+            }
+
             const noBtn = document.getElementById('noBtn');
             noBtn.style.position = 'fixed';
-            const maxX = window.innerWidth - noBtn.offsetWidth;
-            const maxY = window.innerHeight - noBtn.offsetHeight;
-            const x = Math.max(20, Math.random() * (maxX - 20));
-            const y = Math.max(20, Math.random() * (maxY - 20));
+            
+            // 모바일 사파리의 주소창/하단 툴바를 고려한 넉넉한 안전 여백
+            const safeMarginX = 30; // 좌우 여백
+            const safeMarginY = 80; // 상하 여백 (툴바 영역 회피)
+            
+            const viewportWidth = document.documentElement.clientWidth;
+            const viewportHeight = document.documentElement.clientHeight;
+            
+            // 화면 밖으로 나가지 않는 최대/최소 좌표 계산
+            const maxX = viewportWidth - noBtn.offsetWidth - safeMarginX;
+            const maxY = viewportHeight - noBtn.offsetHeight - safeMarginY;
+            
+            const x = Math.max(safeMarginX, Math.random() * maxX);
+            const y = Math.max(safeMarginY, Math.random() * maxY);
+            
             noBtn.style.left = `${x}px`;
             noBtn.style.top = `${y}px`;
         }
@@ -252,7 +273,6 @@
                 const fallDuration = Math.random() * 2 + 2.5;
                 confetti.style.transition = `top ${fallDuration}s cubic-bezier(0.25, 0.46, 0.45, 0.94), opacity ${fallDuration}s ease-in, transform ${fallDuration}s linear`;
                 
-                // 회전 효과 추가
                 const rotation = Math.random() * 360;
                 confetti.style.transform = `rotate(${rotation}deg)`;
 
