@@ -3,7 +3,6 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <!-- 타이틀 수정 완료 -->
     <title>지우야만나자</title>
     <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css" />
     <style>
@@ -90,7 +89,6 @@
             transition: transform 0.1s ease, box-shadow 0.1s ease;
         }
         
-        /* 긍정 버튼과 부정 버튼 모두 동일한 화이트 톤으로 통일 (가독성 개선) */
         #yesBtn, #noBtn, .btn-next { 
             background: linear-gradient(135deg, #ffffff 0%, #e0e0e0 100%);
             color: #000000; 
@@ -99,7 +97,6 @@
         .btn-next { width: 100%; margin-top: 30px; }
         #yesBtn:active, #noBtn:active, .btn-next:active { transform: scale(0.95); box-shadow: 0 4px 10px rgba(255, 255, 255, 0.1); }
         
-        /* 거절 버튼 이동을 위한 트랜지션 추가 */
         #noBtn { 
             transition: left 0.1s, top 0.1s, transform 0.1s ease, box-shadow 0.1s ease; 
             z-index: 100;
@@ -208,17 +205,24 @@
 
             noBtn.style.position = 'fixed';
             
-            const safeMarginX = 30;
-            const safeMarginY = 80; 
+            // 화면 밖으로 안 나가게 안전 여백을 더 타이트하게 재조정
+            const safeMarginX = 40; // 좌우 여백
+            const safeMarginTop = 80; // 상단 여백
+            const safeMarginBottom = 160; // 하단 여백 (밑으로 내려가지 않게 대폭 상향)
             
             const viewportWidth = document.documentElement.clientWidth;
             const viewportHeight = document.documentElement.clientHeight;
             
+            // 버튼이 위치할 수 있는 최소~최대 좌표 계산식 명확화
+            const minX = safeMarginX;
             const maxX = viewportWidth - noBtn.offsetWidth - safeMarginX;
-            const maxY = viewportHeight - noBtn.offsetHeight - safeMarginY;
             
-            const x = Math.max(safeMarginX, Math.random() * maxX);
-            const y = Math.max(safeMarginY, Math.random() * maxY);
+            const minY = safeMarginTop;
+            const maxY = viewportHeight - noBtn.offsetHeight - safeMarginBottom;
+            
+            // 정해진 구역 안에서만 랜덤 이동
+            const x = minX + Math.random() * (maxX - minX);
+            const y = minY + Math.random() * (maxY - minY);
             
             noBtn.style.left = `${x}px`;
             noBtn.style.top = `${y}px`;
@@ -239,7 +243,6 @@
                 });
                 
                 if (response.ok) {
-                    // 완료 멘트 수정
                     finalMsg.innerHTML = "답변 전달 완료~<br>연락할게 지우야";
                     createConfetti();
                 } else {
