@@ -3,126 +3,199 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>데이트 신청</title>
+    <title>주말 데이트 신청 ❤️</title>
     <style>
+        * { box-sizing: border-box; }
         body {
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            height: 100vh;
+            min-height: 100vh;
             margin: 0;
-            background-color: #ffe6e6; /* 사랑스러운 핑크 배경 */
+            background-color: #ffe6e6;
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
             text-align: center;
-            overflow: hidden; /* 버튼이 화면 밖으로 나갈 때 스크롤바 생기는 것 방지 */
+            overflow-x: hidden;
+            padding: 20px;
         }
-        h1 {
-            color: #ff4d4d;
-            font-size: 1.8rem;
-            margin-bottom: 20px;
-            padding: 0 20px;
-        }
-        .gif-container img {
-            width: 250px;
-            border-radius: 15px;
-            margin-bottom: 20px;
-        }
-        .buttons {
+        .card {
+            background: white;
+            border-radius: 20px;
+            padding: 30px 20px;
+            box-shadow: 0 8px 16px rgba(0,0,0,0.06);
+            width: 100%;
+            max-width: 380px;
+            min-height: 400px;
             display: flex;
-            gap: 20px;
-            align-items: center;
+            flex-direction: column;
             justify-content: center;
+            align-items: center;
         }
+        /* 단계별 화면 제어 */
+        .step { display: none; width: 100%; }
+        .step.active {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            animation: fadeIn 0.4s ease-in-out;
+        }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+        h1 { color: #ff4d4d; font-size: 1.6rem; margin-top: 0; margin-bottom: 20px; word-break: keep-all; }
+        .gif-container img { width: 180px; border-radius: 15px; margin-bottom: 20px; }
+        
+        /* 버튼 및 선택지 스타일 */
+        .btn-container { display: flex; gap: 15px; width: 100%; justify-content: center; margin-top: 20px; }
         button {
-            font-size: 1.2rem;
-            padding: 12px 30px;
-            border: none;
-            border-radius: 25px;
-            cursor: pointer;
-            font-weight: bold;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-            transition: transform 0.1s;
+            font-size: 1.1rem; padding: 12px 24px; border: none; border-radius: 25px;
+            cursor: pointer; font-weight: bold; box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+            transition: all 0.1s;
         }
-        #yesBtn {
-            background-color: #ff4d4d;
-            color: white;
+        .btn-next { background-color: #ff4d4d; color: white; width: 100%; margin-top: 25px; }
+        .btn-next:active { transform: scale(0.98); background-color: #e63939; }
+        
+        #yesBtn { background-color: #ff4d4d; color: white; }
+        #noBtn { background-color: #f0f0f0; color: #555; transition: left 0.2s ease, top 0.2s ease; }
+
+        /* 커스텀 체크박스/라디오 스타일 */
+        .options-grid { display: flex; flex-direction: column; gap: 12px; width: 100%; }
+        .option-label {
+            display: block; padding: 15px; background: #f9f9f9; border: 2px solid #eee;
+            border-radius: 12px; cursor: pointer; font-weight: 600; font-size: 1.05rem;
+            transition: all 0.2s; text-align: center; color: #444;
         }
-        #yesBtn:hover {
-            background-color: #ff3333;
-            transform: scale(1.05); /* 마우스 올리면 살짝 커지는 효과 */
-        }
-        #noBtn {
-            background-color: #ffffff;
-            color: #333;
-            transition: left 0.2s ease, top 0.2s ease; /* 부드럽게 도망가도록 애니메이션 부여 */
+        input[type="checkbox"], input[type="radio"] { display: none; }
+        
+        /* 선택되었을 때의 스타일 */
+        input[type="checkbox"]:checked + .option-label,
+        input[type="radio"]:checked + .option-label {
+            background-color: #fff0f0; border-color: #ff4d4d; color: #ff4d4d;
         }
     </style>
 </head>
 <body>
 
-    <div class="gif-container">
-        <!-- 애절하게 부탁하는 귀여운 고양이 GIF -->
-        <img id="mainGif" src="https://media.tenor.com/efioP1eA_20AAAAi/peach-and-goma-peach-goma.gif" alt="부탁하는 고양이">
-    </div>
+    <div class="card">
+        <form id="dateForm" style="width: 100%;">
+            
+            <div class="step active" id="step1">
+                <div class="gif-container">
+                    <img src="https://media.tenor.com/efioP1eA_20AAAAi/peach-and-goma-peach-goma.gif" alt="부탁하는 고양이">
+                </div>
+                <h1>이번 주말에 나랑 데이트 할래?</h1>
+                <div class="btn-container">
+                    <button type="button" id="yesBtn" onclick="nextStep(2)">응! 좋아 ❤️</button>
+                    <button type="button" id="noBtn" onmouseover="moveButton()" ontouchstart="moveButton()">아니 싫어</button>
+                </div>
+            </div>
 
-    <h1 id="question">이번 주말에 나랑 데이트 할래?</h1>
+            <div class="step" id="step2">
+                <div class="gif-container">
+                    <img src="https://media.tenor.com/w8N7I9Ims9IAAAAi/peach-goma.gif" alt="기대하는 고양이">
+                </div>
+                <h1>언제언제 시간돼? (복수선택 가능!)</h1>
+                <div class="options-grid">
+                    <input type="checkbox" id="date1" name="날짜" value="8월 6~7일">
+                    <label class="option-label" for="date1">📅 8월 6 ~ 7일</label>
+                    
+                    <input type="checkbox" id="date2" name="날짜" value="8월 13~14일">
+                    <label class="option-label" for="date2">📅 8월 13 ~ 14일</label>
+                    
+                    <input type="checkbox" id="date3" name="날짜" value="8월 20~21일">
+                    <label class="option-label" for="date3">📅 8월 20 ~ 21일</label>
+                    
+                    <input type="checkbox" id="date4" name="날짜" value="8월 27~28일">
+                    <label class="option-label" for="date4">📅 8월 27 ~ 28일</label>
+                </div>
+                <button type="button" class="btn-next" onclick="nextStep(3)">다음으로 ➡️</button>
+            </div>
 
-    <div class="buttons" id="btnContainer">
-        <button id="yesBtn" onclick="acceptDate()">응! 좋아 ❤️</button>
-        <!-- 마우스가 올라가거나, 터치하려는 순간 moveButton 함수 실행 -->
-        <button id="noBtn" onmouseover="moveButton()" ontouchstart="moveButton()">아니 싫어</button>
+            <div class="step" id="step3">
+                <div class="gif-container">
+                    <img src="https://media.tenor.com/F_Nn868A86UAAAAi/mochi-mochi-peach-cat-peach-cat.gif" alt="고민하는 고양이">
+                </div>
+                <h1>어디갈까? ✨</h1>
+                <div class="options-grid">
+                    <input type="radio" id="loc1" name="장소" value="서울에 있기">
+                    <label class="option-label" for="loc1">🏙️ 서울에 있기</label>
+                    
+                    <input type="radio" id="loc2" name="장소" value="어디론가 여행가기">
+                    <label class="option-label" for="loc2">🚗 어디론가 여행가기</label>
+                </div>
+                <button type="button" class="btn-next" onclick="submitAndFinal()">선택 완료! 🤍</button>
+            </div>
+
+            <div class="step" id="step4">
+                <div class="gif-container">
+                    <img src="https://media.tenor.com/z4_y9-W4qGgAAAAi/peach-goma.gif" alt="신난 고양이">
+                </div>
+                <h1 id="finalMsg">답변이 전송 중입니다... 🚀</h1>
+            </div>
+
+        </form>
     </div>
 
     <script>
-        const noBtn = document.getElementById('noBtn');
-        const yesBtn = document.getElementById('yesBtn');
-        const question = document.getElementById('question');
-        const mainGif = document.getElementById('mainGif');
-        
+        // 발급받은 Formspree 주소 적용 완료!
+        const FORMSPREE_URL = "https://formspree.io/f/xeebdvjn";
+
+        function nextStep(stepNum) {
+            document.querySelectorAll('.step').forEach(step => step.classList.remove('active'));
+            document.getElementById(`step${stepNum}`).classList.add('active');
+        }
+
         function moveButton() {
-            // 버튼을 fixed로 변경하여 화면 전체를 기준으로 자유롭게 움직이게 함
+            const noBtn = document.getElementById('noBtn');
             noBtn.style.position = 'fixed';
-            
-            // 화면 밖으로 버튼이 나가지 않게 최대 X, Y 좌표 계산
             const maxX = window.innerWidth - noBtn.offsetWidth;
             const maxY = window.innerHeight - noBtn.offsetHeight;
-            
-            // 안전 구역 안에서 랜덤 좌표 생성
-            const x = Math.max(0, Math.random() * maxX);
-            const y = Math.max(0, Math.random() * maxY);
-            
-            // 버튼을 새 위치로 이동
+            const x = Math.max(10, Math.random() * maxX);
+            const y = Math.max(10, Math.random() * maxY);
             noBtn.style.left = `${x}px`;
             noBtn.style.top = `${y}px`;
         }
 
-        function acceptDate() {
-            question.innerText = "야호! 주말에 보자 ❤️";
-            // 수락하면 기뻐하는 고양이 GIF로 변경
-            mainGif.src = "https://media.tenor.com/z4_y9-W4qGgAAAAi/peach-goma.gif";
-            yesBtn.style.display = 'none';
-            noBtn.style.display = 'none';
+        async function submitAndFinal() {
+            nextStep(4);
             
-            // 축하 폭죽 파티콩 효과 실행
-            createConfetti();
+            const form = document.getElementById('dateForm');
+            const formData = new FormData(form);
+            const finalMsg = document.getElementById('finalMsg');
+
+            try {
+                const response = await fetch(FORMSPREE_URL, {
+                    method: 'POST',
+                    body: formData,
+                    headers: { 'Accept': 'application/json' }
+                });
+                
+                if (response.ok) {
+                    finalMsg.innerText = "답변 고마워! 곧 연락할게 짜잔! ❤️";
+                    createConfetti();
+                } else {
+                    finalMsg.innerText = "전송에 실패했어요 ㅠ_ㅠ 따로 카톡해줘!";
+                }
+            } catch (error) {
+                finalMsg.innerText = "네트워크 오류 발생! 따로 카톡해줘!";
+            }
         }
 
         function createConfetti() {
             const colors = ['#ff4d4d', '#ffcc00', '#66ff66', '#33ccff', '#ff66b2'];
-            for(let i = 0; i < 100; i++) {
+            for(let i = 0; i < 80; i++) {
                 const confetti = document.createElement('div');
                 confetti.style.position = 'fixed';
-                confetti.style.width = Math.random() * 10 + 5 + 'px';
-                confetti.style.height = Math.random() * 10 + 5 + 'px';
+                confetti.style.width = Math.random() * 8 + 4 + 'px';
+                confetti.style.height = Math.random() * 8 + 4 + 'px';
                 confetti.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
                 confetti.style.left = Math.random() * window.innerWidth + 'px';
                 confetti.style.top = '-20px';
-                confetti.style.borderRadius = Math.random() > 0.5 ? '50%' : '0';
+                confetti.style.borderRadius = '50%';
                 confetti.style.zIndex = '1000';
                 document.body.appendChild(confetti);
 
-                const fallDuration = Math.random() * 3 + 2;
+                const fallDuration = Math.random() * 2 + 2;
                 confetti.style.transition = `top ${fallDuration}s cubic-bezier(0.25, 0.46, 0.45, 0.94), opacity ${fallDuration}s ease-in`;
                 
                 setTimeout(() => {
@@ -130,9 +203,7 @@
                     confetti.style.opacity = '0';
                 }, 50);
 
-                setTimeout(() => {
-                    confetti.remove();
-                }, fallDuration * 1000 + 50);
+                setTimeout(() => confetti.remove(), fallDuration * 1000 + 50);
             }
         }
     </script>
