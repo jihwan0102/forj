@@ -3,7 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>주말 데이트 신청 🖤</title>
+    <!-- 타이틀 수정 완료 -->
+    <title>지우야만나자</title>
     <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css" />
     <style>
         * { box-sizing: border-box; font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, system-ui, sans-serif; }
@@ -15,14 +16,13 @@
             justify-content: center;
             min-height: 100vh;
             margin: 0;
-            /* 고급스러운 블랙/다크 그레이 그라데이션 배경 */
             background: linear-gradient(-45deg, #0a0a0a, #1a1a1a, #2a2a2a, #000000);
             background-size: 400% 400%;
             animation: gradientBG 15s ease infinite;
             text-align: center;
             overflow: hidden; 
             padding: 20px;
-            color: #ffffff; /* 기본 텍스트 색상 화이트 */
+            color: #ffffff; 
         }
 
         @keyframes gradientBG {
@@ -60,7 +60,6 @@
         @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
 
         h1 { 
-            /* 블랙 톤에 맞춰 텍스트 화이트로 변경 */
             color: #ffffff; 
             font-size: 1.5rem; 
             font-weight: 700;
@@ -91,22 +90,18 @@
             transition: transform 0.1s ease, box-shadow 0.1s ease;
         }
         
-        /* 긍정 버튼은 화이트 톤으로 강조 */
-        #yesBtn, .btn-next { 
+        /* 긍정 버튼과 부정 버튼 모두 동일한 화이트 톤으로 통일 (가독성 개선) */
+        #yesBtn, #noBtn, .btn-next { 
             background: linear-gradient(135deg, #ffffff 0%, #e0e0e0 100%);
             color: #000000; 
             box-shadow: 0 8px 20px rgba(255, 255, 255, 0.15);
         }
         .btn-next { width: 100%; margin-top: 30px; }
-        #yesBtn:active, .btn-next:active { transform: scale(0.95); box-shadow: 0 4px 10px rgba(255, 255, 255, 0.1); }
+        #yesBtn:active, #noBtn:active, .btn-next:active { transform: scale(0.95); box-shadow: 0 4px 10px rgba(255, 255, 255, 0.1); }
         
-        /* 거절 버튼은 다크 투명 톤 */
+        /* 거절 버튼 이동을 위한 트랜지션 추가 */
         #noBtn { 
-            background-color: rgba(0, 0, 0, 0.5); 
-            color: #aaaaaa; 
-            border: 1px solid rgba(255, 255, 255, 0.15);
-            box-shadow: 0 4px 10px rgba(0,0,0,0.3);
-            transition: left 0.1s, top 0.1s; 
+            transition: left 0.1s, top 0.1s, transform 0.1s ease, box-shadow 0.1s ease; 
             z-index: 100;
         }
 
@@ -121,7 +116,6 @@
         }
         input[type="checkbox"], input[type="radio"] { display: none; }
         
-        /* 항목이 선택되었을 때 화이트 테두리와 밝아지는 효과 */
         input[type="checkbox"]:checked + .option-label,
         input[type="radio"]:checked + .option-label {
             background-color: rgba(255, 255, 255, 0.15); 
@@ -148,7 +142,6 @@
 
             <div class="step" id="step2">
                 <div class="emoji-container">😍</div>
-                <!-- 서브 텍스트 색상도 다크 모드에 맞게 밝은 그레이(#aaaaaa)로 조정 -->
                 <h1>언제언제 시간돼?<br><span style="font-size: 0.95rem; font-weight: 500; color: #aaaaaa;">(복수선택 가능)</span></h1>
                 <div class="options-grid">
                     <input type="checkbox" id="date1" name="날짜" value="8월 6~7일">
@@ -163,13 +156,11 @@
                     <input type="checkbox" id="date4" name="날짜" value="8월 27~28일">
                     <label class="option-label" for="date4">8월 27 ~ 28일</label>
                 </div>
-                <!-- 화살표 제거 -->
                 <button type="button" class="btn-next" onclick="nextStep(3)">다음으로</button>
             </div>
 
             <div class="step" id="step3">
                 <div class="emoji-container">🤔</div>
-                <!-- 물음표 추가 -->
                 <h1>어디갈까?</h1>
                 <div class="options-grid">
                     <input type="radio" id="loc1" name="장소" value="서울에 있기">
@@ -248,8 +239,8 @@
                 });
                 
                 if (response.ok) {
-                    // 마지막 멘트 수정 반영
-                    finalMsg.innerHTML = "답변 전달완료<br>연락할게 지우야";
+                    // 완료 멘트 수정
+                    finalMsg.innerHTML = "답변 전달 완료~<br>연락할게 지우야";
                     createConfetti();
                 } else {
                     finalMsg.innerText = "전송에 실패했어요 ㅠ_ㅠ 따로 카톡해줘!";
@@ -260,7 +251,6 @@
         }
 
         function createConfetti() {
-            // 블랙 테마에 어울리게 폭죽 색상을 골드, 실버, 화이트 조합으로 변경
             const colors = ['#FFD700', '#C0C0C0', '#ffffff', '#e0e0e0', '#f5f5f5'];
             for(let i = 0; i < 100; i++) {
                 const confetti = document.createElement('div');
